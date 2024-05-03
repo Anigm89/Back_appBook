@@ -81,12 +81,13 @@ const BookController = {
         try{
             const {titulo, subtitulo, autor, sinopsis, imagen, paginas, genero, keywords} = req.body;
             const insertQuery = `INSERT INTO libros (titulo, subtitulo, autor, sinopsis, imagen, paginas, genero, keywords) 
-                                VALUES ("${titulo}" ,"${subtitulo}","${autor}","${sinopsis}","${imagen}","${paginas}","${genero}","${keywords}")`;
+                                VALUES ("${titulo}","${subtitulo}","${autor}","${sinopsis}","${imagen}","${paginas}","${genero}","${keywords}")`;
             const newBook = await pool.query(insertQuery)
             res.status(201).send(newBook)
         }
         catch(error){
             res.status(500).json({ message: "Error creating book" });
+            console.log(error)
         }
     },
    
@@ -94,7 +95,7 @@ const BookController = {
         try{
             const id = req.params.id;
             const {titulo, subtitulo, autor, sinopsis, imagen, paginas, genero, keywords} = req.body;
-            const updateQuery = `UPDATE libros SET titulo ='${titulo}', subtitulo='${subtitulo}',autor='${autor}',sinopsis='${sinopsis}',imagen='${imagen}',paginas='${paginas}',genero='${genero}',keywords='${keywords}' WHERE id = '${id}'`;
+            const updateQuery = `UPDATE libros SET titulo ='${titulo}', subtitulo='${subtitulo}',autor='${autor}',sinopsis='${sinopsis}',imagen='${imagen}',paginas='${paginas}',genero='${genero}',keywords='${keywords}' WHERE id = ${id}`;
             const updateBook = await pool.query(updateQuery)
             if(!updateBook) {
                 return res.status(404).json({ mensaje: 'No se ha podido actualizar' })
