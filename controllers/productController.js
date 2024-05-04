@@ -154,19 +154,14 @@ const BookController = {
     async getLeidos (req, res) {
         try{
             const { uid } = req.params;
-           // const leidosquery = `SELECT b.*, u.uid, l.* FROM libros b, usuarios u, leidos l WHERE b.id = l.id_libro AND u.uid = l.uid AND u.uid = '${uid}' GROUP BY b.id, u.uid`;
             const leidosquery = `SELECT b.*, u.uid, MAX(l.id) AS leido_id, MAX(l.id_libro) AS id_libro, MAX(l.uid) AS leido_uid
-            FROM libros b
-            JOIN leidos l ON b.id = l.id_libro
-            JOIN usuarios u ON u.uid = l.uid
-            WHERE u.uid = '${uid}' GROUP BY b.id`;
+            FROM libros b JOIN leidos l ON b.id = l.id_libro JOIN usuarios u ON u.uid = l.uid WHERE u.uid = '${uid}' GROUP BY b.id`;
             const [books] = await pool.query(leidosquery);
             res.json(books)
         }
         catch(error){
             console.log(error)
             res.status(500).json({ message: "Error al actualizar" });
-
         }
     },
     async pendientes (req, res){
