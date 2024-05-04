@@ -155,7 +155,7 @@ const BookController = {
         try{
             const { uid } = req.params;
             console.log('uid', uid)
-            const leidosquery = `SELECT b.*, u.uid, l.* FROM libros b, usuarios u, leidos l WHERE b.id = l.id_libro AND u.uid = l.uid AND u.uid = '${uid}' GROUP BY b.id`;
+            const leidosquery = `SELECT b.*, u.uid, l.* FROM libros b, usuarios u, leidos l WHERE b.id = l.id_libro AND u.uid = l.uid AND u.uid = '${uid}' GROUP BY b.id, u.uid`;
             const [books] = await pool.query(leidosquery);
             res.json(books)
         }
