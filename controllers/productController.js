@@ -214,6 +214,32 @@ const BookController = {
         catch(error){
             console.log(error)
         }
+    },
+    async getValorado (req, res) {
+        try{
+            const { id_libro, uid } = req.params;
+            const valoradoquery = `SELECT b.*, u.uid, v.* FROM libros b, usuarios u, valorados v WHERE b.id = v.id_libro AND v.id_libro = '${id_libro}' AND u.uid = v.uid AND u.uid  = '${uid}' ORDER BY v.id DESC LIMIT 1`;
+            const [books] = await pool.query(valoradoquery);
+            res.json(books)
+        }
+        catch(error){
+            console.log(error)
+        }
+    },
+    async valorados (req, res){
+        try{
+            const {id_libro, uid, puntos} = req.body;
+            const insertQuery = `INSERT INTO valorados (id_libro, uid, puntos) VALUES ("${id_libro}", "${uid}", "${puntos}")`;
+            const valorado = await pool.query(insertQuery)
+            if (!valorado) {
+                res.status(500).send({mensaje: 'Error al valuar el libro'});
+            } else {
+                res.status(201).send({mensaje: 'valor añadido correctamente'});
+            }
+        }
+        catch(error){
+            res.status(500).json({ message: "Error al puntuar libro", error });
+        }
     }
 }
 

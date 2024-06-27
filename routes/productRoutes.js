@@ -23,5 +23,7 @@ router.get('/pendientes/:uid', BookController.getPendientes);
 router.delete('/deletePendiente/:id_libro/:uid', verifyUser, BookController.deletePendiente)
 router.delete('/deleteLeido/:id_libro/:uid', verifyUser, BookController.deleteLeido)
 
+router.get('/valorado/:id_libro/:uid', BookController.getValorado);
+router.post('/valorados', BookController.valorados);
 
 module.exports = router;
