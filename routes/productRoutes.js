@@ -24,6 +24,6 @@ router.delete('/deletePendiente/:id_libro/:uid', verifyUser, BookController.dele
 router.delete('/deleteLeido/:id_libro/:uid', verifyUser, BookController.deleteLeido)
 
 router.get('/valorado/:id_libro/:uid', BookController.getValorado);
-router.post('/valorados', BookController.valorados);
+router.post('/valorados', verifyUser, BookController.valorados);
 
 module.exports = router;
