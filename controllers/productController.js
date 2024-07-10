@@ -250,6 +250,16 @@ const BookController = {
         catch(error){
             res.status(500).json({ message: "Error al obtener estos libros", error });
         }
+    },
+    async masLeidos(req, res){
+        try{
+            const getquery = 'SELECT b.id, b.titulo, b.imagen, COUNT(l.id_libro) as veces_leido FROM libros b JOIN leidos l ON l.id_libro = b.id GROUP BY b.id, b.titulo, b.imagen ORDER BY veces_leido DESC LIMIT 10';
+            const [masleidos] = await pool.query(getquery);
+            res.json(masleidos);
+        }
+        catch(error){
+            res.status(500).json({ message: "Error al obtener libros más leidos por los usuarios", error });
+        }
     }
 }
 
